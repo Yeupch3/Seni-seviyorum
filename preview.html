@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gift Animation</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    overflow:hidden;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ff4e88,#ff9ec4,#ffd6e8);
+    animation:bgMove 8s infinite alternate;
+}
+
+@keyframes bgMove{
+    0%{filter:hue-rotate(0deg);}
+    100%{filter:hue-rotate(25deg);}
+}
+
+.container{
+    position:relative;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* HEARTS */
+.heart{
+    position:absolute;
+    width:20px;
+    height:20px;
+    background:red;
+    transform:rotate(45deg);
+    animation:float 6s linear infinite;
+    opacity:0.5;
+}
+
+.heart::before,
+.heart::after{
+    content:'';
+    position:absolute;
+    width:20px;
+    height:20px;
+    background:red;
+    border-radius:50%;
+}
+
+.heart::before{
+    top:-10px;
+    left:0;
+}
+
+.heart::after{
+    left:-10px;
+    top:0;
+}
+
+@keyframes float{
+    0%{
+        transform:translateY(100vh) rotate(45deg);
+        opacity:0;
+    }
+    30%{
+        opacity:0.7;
+    }
+    100%{
+        transform:translateY(-120vh) rotate(45deg);
+        opacity:0;
+    }
+}
+
+/* GIFT */
+.gift-box{
+    position:relative;
+    width:220px;
+    height:220px;
+    cursor:pointer;
+    transition:0.5s;
+}
+
+.box{
+    width:220px;
+    height:170px;
+    background:#ff2d6f;
+    border-radius:15px;
+    position:absolute;
+    bottom:0;
+    box-shadow:0 20px 40px rgba(0,0,0,0.3);
+}
+
+.lid{
+    position:absolute;
+    width:240px;
+    height:55px;
+    background:#ff4d88;
+    top:20px;
+    left:-10px;
+    border-radius:15px;
+    transition:1s;
+    transform-origin:left;
+    z-index:5;
+}
+
+.ribbon-vertical{
+    position:absolute;
+    width:40px;
+    height:220px;
+    background:white;
+    left:90px;
+    z-index:2;
+}
+
+.ribbon-horizontal{
+    position:absolute;
+    width:240px;
+    height:40px;
+    background:white;
+    top:80px;
+    left:-10px;
+    z-index:3;
+}
+
+.bow{
+    position:absolute;
+    width:60px;
+    height:60px;
+    border:12px solid white;
+    border-radius:50%;
+    top:-20px;
+    left:80px;
+    z-index:10;
+}
+
+.bow::before{
+    content:'';
+    position:absolute;
+    width:60px;
+    height:60px;
+    border:12px solid white;
+    border-radius:50%;
+    left:-55px;
+    top:-12px;
+}
+
+.sparkles{
+    position:absolute;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+}
+
+.spark{
+    position:absolute;
+    width:8px;
+    height:8px;
+    background:white;
+    border-radius:50%;
+    opacity:0;
+}
+
+/* MESSAGE */
+.message{
+    position:absolute;
+    color:white;
+    font-size:70px;
+    font-weight:bold;
+    letter-spacing:4px;
+    opacity:0;
+    transform:scale(0.3);
+    text-shadow:
+        0 0 10px white,
+        0 0 20px #ff8ac2,
+        0 0 40px #ff2d6f;
+    transition:1.5s;
+    text-align:center;
+}
+
+.sub{
+    font-size:22px;
+    margin-top:20px;
+    font-weight:normal;
+    letter-spacing:2px;
+}
+
+/* OPENED */
+.open .lid{
+    transform:rotate(-120deg) translateY(-40px);
+}
+
+.open .gift-box{
+    transform:scale(0);
+    opacity:0;
+}
+
+.show-message{
+    opacity:1;
+    transform:scale(1);
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.08);}
+    100%{transform:scale(1);}
+}
+
+/* CLICK TEXT */
+.click-text{
+    position:absolute;
+    bottom:80px;
+    color:white;
+    font-size:22px;
+    animation:blink 1.5s infinite;
+}
+
+@keyframes blink{
+    0%,100%{opacity:1;}
+    50%{opacity:0.3;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="container">
+
+    <!-- Floating Hearts -->
+    <script>
+        for(let i=0;i<40;i++){
+            const heart=document.createElement("div");
+            heart.classList.add("heart");
+            heart.style.left=Math.random()*100+"vw";
+            heart.style.animationDuration=(4+Math.random()*5)+"s";
+            heart.style.opacity=Math.random();
+            heart.style.transform=`scale(${0.5+Math.random()*1.5}) rotate(45deg)`;
+            document.body.appendChild(heart);
+        }
+    </script>
+
+    <!-- Gift -->
+    <div class="gift-box" id="gift">
+        <div class="lid"></div>
+        <div class="bow"></div>
+        <div class="ribbon-vertical"></div>
+        <div class="ribbon-horizontal"></div>
+        <div class="box"></div>
+    </div>
+
+    <!-- Message -->
+    <div class="message" id="message">
+        Seni seviyorum ❤️
+        <div class="sub">You opened my heart</div>
+    </div>
+
+    <div class="click-text">
+        🎁 Clique sur le cadeau
+    </div>
+
+</div>
+
+<script>
+const gift = document.getElementById("gift");
+const message = document.getElementById("message");
+
+gift.addEventListener("click", ()=>{
+
+    document.body.classList.add("open");
+
+    setTimeout(()=>{
+        gift.style.display="none";
+        message.classList.add("show-message");
+
+        // Fireworks sparkles
+        for(let i=0;i<120;i++){
+            createSpark();
+        }
+
+    },900);
+});
+
+function createSpark(){
+
+    const spark = document.createElement("div");
+    spark.classList.add("spark");
+
+    spark.style.left = "50%";
+    spark.style.top = "50%";
+
+    document.body.appendChild(spark);
+
+    const x = (Math.random()-0.5)*1200;
+    const y = (Math.random()-0.5)*1200;
+
+    spark.animate([
+        {
+            transform:"translate(0,0) scale(1)",
+            opacity:1
+        },
+        {
+            transform:`translate(${x}px,${y}px) scale(0)`,
+            opacity:0
+        }
+    ],{
+        duration:2000,
+        easing:"cubic-bezier(.17,.67,.83,.67)"
+    });
+
+    setTimeout(()=>{
+        spark.remove();
+    },2000);
+}
+</script>
+
+</body>
+</html>
